@@ -1,0 +1,38 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from pathlib import Path
+
+# Caminho dos arquivos
+DATA_PATH = Path("../data/sales.csv")
+OUTPUT_PATH = Path("../output")
+OUTPUT_PATH.mkdir(exist_ok=True)
+
+# Carregar dados
+df = pd.read_csv(DATA_PATH)
+
+# Limpeza básica
+df.dropna(inplace=True)
+
+# Estatísticas descritivas
+summary = df.describe()
+print(summary)
+
+# Salvar resumo
+summary.to_csv(OUTPUT_PATH / "summary.csv")
+
+# Visualizações
+plt.figure(figsize=(10,6))
+sns.countplot(x="Category", data=df)
+plt.title("Number of Products per Category")
+plt.savefig(OUTPUT_PATH / "category_count.png")
+plt.close()
+
+plt.figure(figsize=(10,6))
+sns.lineplot(x="Date", y="Sales", data=df)
+plt.title("Sales over Time")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig(OUTPUT_PATH / "sales_over_time.png")
+plt.close()
+
